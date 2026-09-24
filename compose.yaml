@@ -1,0 +1,53 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: samruddhi-db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - samruddhi
+
+
+  odoo:
+    image: odoo:19.0
+    container_name: samruddhi-odoo
+    restart: unless-stopped
+
+    depends_on:
+      - db
+
+    ports:
+      - "${ODOO_PORT}:8069"
+
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: ${POSTGRES_USER}
+      PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+
+    networks:
+      - samruddhi
+
+
+volumes:
+  postgres_data:
+  odoo_data:
+
+
+networks:
+  samruddhi:
+    driver: bridge

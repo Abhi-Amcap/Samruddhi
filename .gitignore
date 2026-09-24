@@ -1,0 +1,24 @@
+.env
+
+__pycache__/
+*.pyc
+*.pyo
+
+.vscode/
+
+# Odoo
+*.log
+
+# PostgreSQL
+postgres_data/
+
+# Odoo data
+odoo_data/
+
+# Python
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
